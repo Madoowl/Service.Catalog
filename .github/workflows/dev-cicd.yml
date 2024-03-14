@@ -13,7 +13,7 @@ env:
 
 jobs: 
   
-  build-project:
+  build-app:
     
     name: DOTNET Build
     
@@ -37,10 +37,16 @@ jobs:
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
+  
+  deploy-app:
     
-  #  - name: Build Docker image
-   #   run: |
-    #    dotnet publish ./src/Catalog.Api/Catalog.Api.csproj /t:PublishContainer -r linux-x64
+    name: Build and deploy to Docker
+    
+    runs-on: ubuntu-22.04
+    
+    needs: ['build-app']
+    
+    steps:
         
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v6
