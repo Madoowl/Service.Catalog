@@ -7,7 +7,7 @@ on:
     
 env: 
   DOTNET_IMAGE: '${{ secrets.DOCKERHUB_USERNAME }}/service.catalog'
-  DOTNET_TAG: latest
+  TAG: dev
   DOTNET_VERSION: 8.0.100
   UBUNTU_VERSION: ubuntu-22.04
 
@@ -46,7 +46,7 @@ jobs:
       uses: mr-smithers-excellent/docker-build-push@v6
       with:
         image: ${{ env.DOTNET_IMAGE }}
-        tag: v0.1, latest
+        tags: v0.1, ${{ env.TAG }}
         registry: docker.io
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
