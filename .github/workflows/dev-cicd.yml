@@ -1,0 +1,54 @@
+name: API Deployement
+
+on:
+  push:
+    branches: [ "develop" ]
+  workflow_dispatch:
+    
+env: 
+  DOTNET_IMAGE: '${{ secrets.DOCKERHUB_USERNAME }}/sample-app'
+  DOTNET_TAG: latest
+  DOTNET_VERSION: 8.0.100
+  UBUNTU_VERSION: ubuntu-22.04
+
+jobs: 
+  
+  build-project:
+    
+    name: DOTNET Build
+    
+    runs-on: ubuntu-22.04
+   
+    steps:
+  
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version:  ${{ env.DOTNET_VERSION }}
+    
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    
+    - name: Build Docker image
+      run: |
+        pwd
+        ls
+        dotnet publish ./API-DOTNET.csproj /t:PublishContainer -r linux-x64
+        
+    - name: Build and Push Docker Image
+      uses: mr-smithers-excellent/docker-build-push@v6
+      with:
+        image: maadoowl/service.catalog
+        tag: v0.1, latest
+        registry: docker.io
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
