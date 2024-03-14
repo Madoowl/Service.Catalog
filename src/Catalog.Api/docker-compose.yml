@@ -1,0 +1,11 @@
+﻿version: '3.4'
+
+services:
+  catalog.api:
+    # image: catalogapi
+    container_name: catalog.api.container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+    - "8080:8080"
