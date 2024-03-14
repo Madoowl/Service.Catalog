@@ -38,13 +38,14 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     
-    - name: Build Docker image
-      run: |
-        dotnet publish ./src/Catalog.Api/Catalog.Api.csproj /t:PublishContainer -r linux-x64
+  #  - name: Build Docker image
+   #   run: |
+    #    dotnet publish ./src/Catalog.Api/Catalog.Api.csproj /t:PublishContainer -r linux-x64
         
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v6
       with:
+        dockerfile: ./src/Catalog.Api/Dockerfile
         image: ${{ env.DOTNET_IMAGE }}
         tags: v0.1, ${{ env.TAG }}
         registry: docker.io
