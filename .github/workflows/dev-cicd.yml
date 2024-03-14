@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     
 env: 
-  DOTNET_IMAGE: '${{ secrets.DOCKERHUB_USERNAME }}/sample-app'
+  DOTNET_IMAGE: '${{ secrets.DOCKERHUB_USERNAME }}/service.catalog'
   DOTNET_TAG: latest
   DOTNET_VERSION: 8.0.100
   UBUNTU_VERSION: ubuntu-22.04
@@ -40,14 +40,12 @@ jobs:
     
     - name: Build Docker image
       run: |
-        pwd
-        ls
         dotnet publish ./Catalog.Api.csproj /t:PublishContainer -r linux-x64
         
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v6
       with:
-        image: maadoowl/service.catalog
+        image: ${{ env.DOTNET_IMAGE }}
         tag: v0.1, latest
         registry: docker.io
         username: ${{ secrets.DOCKERHUB_USERNAME }}
