@@ -40,7 +40,7 @@ jobs:
     
     - name: Build Docker image
       run: |
-        dotnet publish ./Catalog.Api.csproj /t:PublishContainer -r linux-x64
+        dotnet publish ./src/Catalog.Api/Catalog.Api.csproj /t:PublishContainer -r linux-x64
         
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v6
