@@ -42,7 +42,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapGet("/", () => "Catalog API is responding ...");
+app.MapGet("/", () => "Good Food Hello");
 
 
 app.Run();
